@@ -1,3 +1,4 @@
+import { Container, List } from "@mui/material";
 import { useEffect, useState } from "react";
 import API from "../utils/API";
 
@@ -15,13 +16,14 @@ function Expenses() {
 
   return (
     <>
-      <h1>Expenses</h1>
-      {expenses.length &&
-        expenses.map((expense) => (
-          <div key={expense.id}>
-            <h2>{expense.id}</h2>
-          </div>
-        ))}
+      <Container maxWidth="sm">
+        <h1>Expenses</h1>
+        <List>
+          {expenses.map((expense) => (
+            <li key={expense.id}>{expense.id} {expense.description}</li>
+          ))}
+        </List>
+      </Container>
     </>
   );
 }
