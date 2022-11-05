@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 function DrawerList({ handleDrawer }) {
   return (
     <div
-      sx={{ width: 250 }}
+      sx={{ padding: 5 }}
       onClick={handleDrawer(false)}
       onKeyDown={handleDrawer(false)}
     >

@@ -1,24 +1,31 @@
-import { List, ListItem, ListItemText, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+import {
+  Button,
+  List,
+  ListItem,
+  ListItemText,
+  Typography,
+} from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import API from "../utils/API";
 
-function Expenses() {
+function ActiveExpenses() {
   const [expenses, setExpenses] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    API.get("/splitwise/expenses")
+    API.get("/splitwise/active-expenses")
       .then((res) => {
-        console.log("fired");
         setExpenses(res.data);
-        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
 
+  const navigate = useNavigate();
+
   return (
-    <>
+    <div>
       <h1>Expenses</h1>
       {loading && <h1>Loading...</h1>}
       <List>
@@ -30,26 +37,34 @@ function Expenses() {
                 primary={expense.description}
                 secondary={
                   <>
-                    {expense.repayments.map((repayment, index) => (
-                      <Typography key={index}>
+                    {expense.repayments.map((repayment) => (
+                      <Typography>
                         <b>
-                          {`${repayment.toUser.user.first_name} ${repayment.toUser.user.last_name}`}
+                          {`${repayment.fromUser.user.first_name} ${repayment.fromUser.user.last_name}`}
                         </b>
                         {" paid "}
                         <b>
-                          {`${repayment.fromUser.user.first_name} ${repayment.fromUser.user.last_name} `}
+                          {`${repayment.toUser.user.first_name} ${repayment.toUser.user.last_name} `}
                         </b>
                         {repayment.amount}
                       </Typography>
                     ))}
+                    <Button
+                      variant="contained"
+                      onClick={() => {
+                        navigate(`/repay/${expense.id}`);
+                      }}
+                    >
+                      Settle
+                    </Button>
                   </>
                 }
               />
             </ListItem>
           ))}
       </List>
-    </>
+    </div>
   );
 }
 
-export default Expenses;
+export default ActiveExpenses;
