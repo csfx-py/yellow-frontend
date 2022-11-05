@@ -4,7 +4,7 @@ import API from "../utils/API";
 function Expenses() {
   const [expenses, setExpenses] = useState([]);
   useEffect(() => {
-    API.get("/expenses")
+    API.get("/splitwise/expenses")
       .then((res) => {
         setExpenses(res.data);
       })
